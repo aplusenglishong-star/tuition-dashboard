@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy>=1.4
+alembic
+psycopg2-binary
+pydantic
+python-dotenv
+python-dateutil
+pandas
+openpyxl
+celery[redis]
+redis
+httpx
+pydantic-settings
