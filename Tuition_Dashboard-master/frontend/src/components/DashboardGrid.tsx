@@ -106,6 +106,7 @@ export default function Dashboard() {
   const [tab, setTab] = useState<"all" | "4" | "8">("all");
   const [groupFilter, setGroupFilter] = useState<string>("all");
   const [dayFilter, setDayFilter] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const [futurePreviewMap, setFuturePreviewMap] = useState<Record<number, any[]>>({});
   const [showFutureMap, setShowFutureMap] = useState<Record<number, boolean>>({});
@@ -146,6 +147,11 @@ export default function Dashboard() {
     ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][n] ?? `${n}`;
 
   const studentMatchesFilters = (s: StudentType) => {
+    if (searchQuery.trim() !== "") {
+      const q = searchQuery.toLowerCase();
+      if (!s.name.toLowerCase().includes(q)) return false;
+    }
+
     if (groupFilter !== "all" && s.group_name !== groupFilter) return false;
 
     if (dayFilter !== "all") {
@@ -202,7 +208,7 @@ export default function Dashboard() {
     }
 
     return flat;
-  }, [students, tab, groupFilter, dayFilter]);
+  }, [students, tab, groupFilter, dayFilter, searchQuery]);
 
   // Actions
   const togglePayment = async (pkgId: number, paid: boolean) => {
@@ -462,6 +468,17 @@ export default function Dashboard() {
               <option value="5">Sat</option>
               <option value="6">Sun</option>
             </select>
+          </div>
+
+          <div className="ml-4">
+            <label className="text-xs block mb-1">Search Name</label>
+            <input
+              type="text"
+              placeholder="Search student..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="p-2 border rounded"
+            />
           </div>
         </div>
 
